@@ -1,0 +1,42 @@
+{
+    "name": "timdev/log",
+    "description": "Opinionated structured logging for PHP.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "TimDev\\Log\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TimDev\\Test\\Log\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tim Lieberman",
+            "email": "dev@timdev.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://git.timdev.com/tim/php-stack-logger"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require-dev": {
+        "timdev/devtools": "^0.1.1",
+        "nyholm/psr7-server": "^1.0",
+        "nyholm/psr7": "^1.4",
+        "relay/relay": "~2.0"
+    },
+    "require": {
+        "php": "^8.0",
+        "timdev/php-stack-logger": "^0.7",
+        "monolog/monolog": "^2.3",
+        "psr/http-server-middleware": "^1.0"
+    }
+}
