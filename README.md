@@ -48,8 +48,42 @@ The middleware will not set context keys for `null` values.
 
 For more example usage, see the [tests](tests/Middleware/LogRequestAttributesTest.php)
 
+### TimDev\Log\Middleware\DevelopmentRedirect
+
+This middleware strips the `Location` header from redirect-responses and 
+replaces the body with basic HTML document that includes a meta-refresh tag.
+
+This is handy if you're using something like Monolog's [BrowserConsoleHandler]
+that relies on emitting javascript for the browser to execute in order to push
+log messages to the browser's console.
+
+Example:
+
+```php
+use Psr\Http\Message\ServerRequestInterface as SRI;
+use TimDev\Log\Middleware\DevelopmentRedirect;
+
+// Seconds to delay before refreshing. Default is zero.
+$delaySeconds = 2;
+$middleware = new DevelopmentRedirect($delaySeconds);
+```
+
+This middleware should usually be added *early* in your pipeline, since it only
+touches the response, and you want the response-mutation to happen last or 
+nearly-last. In my projects, I typically do something like this:
+
+```php
+// ErrorHandler is the outermost middleware.
+$app->pipe(ErrorHandler::class);
+// If we're adding it, the DR middlware is the second outer-most.
+if (getenv('APP_ENV') === 'development'){
+    $app->pipe(new DevelopmentRedirect(1));
+}
+// ... all the rest of my middlewares.
+```
+
 
 [monolog]: https://github.com/Seldaek/monolog
 [timdev/stack-logger]: https://git.timdev.com/tim/php-stack-logger
 [ndjson]: http://ndjson.org/
-
+[BrowserConsoleHandler](https://github.com/Seldaek/monolog/blob/82ab6a5f4f9ad081856eee4c9458efed5ecd7156/src/Monolog/Handler/BrowserConsoleHandler.php)

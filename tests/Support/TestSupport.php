@@ -16,13 +16,13 @@ trait TestSupport
     /**
      * Dispatch $request through the provided $middleware(s) and return the response.
      */
-    private function dispatch(array|MiddlewareInterface $middleware, ServerRequestInterface $request): ResponseInterface
+    private function dispatch(array|MiddlewareInterface $middleware, ServerRequestInterface $request, ?callable $responseFactory = null): ResponseInterface
     {
         if ($middleware instanceof MiddlewareInterface) {
             $middleware = [$middleware];
         }
         // add terminal middleware that actually creates a response.
-        $middleware[] = static fn(): ResponseInterface => new Response();
+        $middleware[] = $responseFactory ?? static fn(): ResponseInterface => new Response();
         return (new Relay($middleware))->handle($request);
     }
 

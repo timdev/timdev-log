@@ -5,12 +5,7 @@ declare(strict_types=1);
 namespace TimDev\Test\Log\Middleware;
 
 use Monolog\Test\TestCase;
-use Nyholm\Psr7\Factory\Psr17Factory;
-use Nyholm\Psr7\Response;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Relay\Relay;
 use TimDev\Log\Middleware\LogRequestAttributes;
 use TimDev\StackLogger\StackLogger;
 use TimDev\StackLogger\Test\Support\Psr3StackLogger;
