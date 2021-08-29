@@ -1,8 +1,26 @@
 {
     "name": "timdev/log",
-    "description": "Opinionated structured logging for PHP.",
     "type": "library",
+    "description": "Opinionated structured logging for PHP.",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Tim Lieberman",
+            "email": "dev@timdev.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "monolog/monolog": "^2.3",
+        "psr/http-server-middleware": "^1.0",
+        "timdev/php-stack-logger": "^0.7"
+    },
+    "require-dev": {
+        "nyholm/psr7": "^1.4",
+        "nyholm/psr7-server": "^1.0",
+        "relay/relay": "~2.0",
+        "timdev/devtools": "^0.1.1"
+    },
     "autoload": {
         "psr-4": {
             "TimDev\\Log\\": "src/"
@@ -13,12 +31,6 @@
             "TimDev\\Test\\Log\\": "tests/"
         }
     },
-    "authors": [
-        {
-            "name": "Tim Lieberman",
-            "email": "dev@timdev.com"
-        }
-    ],
     "repositories": [
         {
             "type": "vcs",
@@ -27,16 +39,28 @@
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "require-dev": {
-        "timdev/devtools": "^0.1.1",
-        "nyholm/psr7-server": "^1.0",
-        "nyholm/psr7": "^1.4",
-        "relay/relay": "~2.0"
+    "scripts": {
+        "dev": "@dev:qa",
+        "dev:analyze": "psalm",
+        "dev:coverage": "XDEBUG_MODE=coverage phpunit --coverage-text --colors=always",
+        "dev:coverage:html": "XDEBUG_MODE=coverage phpunit --coverage-html build/coverage && echo '\\nCoverage Report: build/coverage/index.html'",
+        "dev:cs": "phpcs",
+        "dev:cs:fix": "phpcbf",
+        "dev:qa": [
+            "@dev:analyze",
+            "@dev:test",
+            "@dev:cs"
+        ],
+        "dev:test": "phpunit --testdox --color=always"
     },
-    "require": {
-        "php": "^8.0",
-        "timdev/php-stack-logger": "^0.7",
-        "monolog/monolog": "^2.3",
-        "psr/http-server-middleware": "^1.0"
+    "scripts-descriptions": {
+        "dev": "Shortcut for dev:qa.",
+        "dev:analyze": "Run static analysis with psalm.",
+        "dev:coverage": "Report unit test coverage with output in the terminal.",
+        "dev:coverage:html": "Generate unit test coverage report.",
+        "dev:cs": "Run code style checks.",
+        "dev:cs:fix": "Fix code style violations.",
+        "dev:qa": "Run all quality checks (tests, static analysis, and coding standard).",
+        "dev:test": "Run unit tests."
     }
 }

@@ -15,7 +15,6 @@ use TimDev\Log\Middleware\LogRequestAttributes;
 use TimDev\StackLogger\StackLogger;
 use TimDev\StackLogger\Test\Support\Psr3StackLogger;
 use TimDev\Test\Log\Support\DummyUser;
-
 use TimDev\Test\Log\Support\TestSupport;
 
 use function PHPUnit\Framework\assertArrayNotHasKey;
@@ -25,7 +24,6 @@ use function PHPUnit\Framework\assertSame;
 
 class LogRequestAttributesTest extends TestCase
 {
-
     use TestSupport;
 
     public function testSimpleValue(): void
