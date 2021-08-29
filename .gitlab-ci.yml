@@ -7,7 +7,7 @@ cache:
 
 before_script:
 # We need git and PHP's zip extension.
-- apt-get update -yqq && apt-get install libzip-dev -yqq
+- apt-get update -yqq && apt-get install libzip-dev git -yqq
 - docker-php-ext-install zip
 
 # Install composer
