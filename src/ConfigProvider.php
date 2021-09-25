@@ -1,22 +1,26 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TimDev\Log;
 
-class ConfigProvider {
+class ConfigProvider
+{
     public function __invoke(): array
     {
         return [
             'dependencies' => $this->getDependencies(),
-            'timdev_log' => $this->getConfig()
+            'timdev' => ['log' => $this->getConfig()]
         ];
     }
 
-    private function getDependencies(): array {
+    private function getDependencies(): array
+    {
         return [];
     }
 
-    private function getConfig(): array {
+    private function getConfig(): array
+    {
         return [];
     }
 }

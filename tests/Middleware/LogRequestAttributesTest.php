@@ -62,26 +62,6 @@ class LogRequestAttributesTest extends TestCase
         );
     }
 
-//    /**
-//     * Dispatch $request through the provided $middleware(s) and return the response.
-//     */
-//    private function dispatch(array|MiddlewareInterface $middleware, ServerRequestInterface $request): ResponseInterface
-//    {
-//        if ($middleware instanceof MiddlewareInterface) {
-//            $middleware = [$middleware];
-//        }
-//        // add a final response-factory middleware
-//        $middleware[] = static fn(): ResponseInterface => new Response();
-//        return (new Relay($middleware))->handle($request);
-//    }
-//
-//    private function request(): ServerRequestInterface
-//    {
-//        return (new Psr17Factory())->createServerRequest('GET', '/')
-//            ->withAttribute('RequestId', 'AAAZZZ')
-//            ->withAttribute('user', new DummyUser());
-//    }
-
     public function testSimpleValueViaCallable(): void
     {
         // A Request with a string at RequestId and an object at user
