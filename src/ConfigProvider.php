@@ -21,6 +21,10 @@ class ConfigProvider
 
     private function getConfig(): array
     {
-        return [];
+        return [
+            'name' => 'app',
+            'logfile' => 'php://output',
+            'enable_browser_console' => false
+        ];
     }
 }
