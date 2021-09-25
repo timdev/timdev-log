@@ -72,7 +72,7 @@ class LoggerTest extends TestCase
         assertSame(8882, $rec['context']['deleted_by']);
     }
 
-    public function testFactoryMethod()
+    public function testFactoryMethod(): void
     {
         $logger = Logger::create('log');
         assertSame('log', $logger->getWrapped()->getName());
