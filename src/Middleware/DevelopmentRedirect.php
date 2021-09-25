@@ -38,7 +38,7 @@ class DevelopmentRedirect implements MiddlewareInterface
 
         $lh = $response->getHeader('Location');
 
-        if (!empty($lh) && in_array($response->getStatusCode(), [301, 302])) {
+        if (!empty($lh) && in_array($response->getStatusCode(), [301, 302], true)) {
             // Replace any response body with our client-side redirection document.
             $body = $response->getBody();
             $body->rewind();
