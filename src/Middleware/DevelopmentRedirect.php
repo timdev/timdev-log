@@ -11,7 +11,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * This middleware intercepts redirect (301/302 status w/ a Location header)
- * responses and replaces any body content with a simple HTML page with a
+ * responses and replaces the body content with a simple HTML page with a
  * meta-refresh tag.
  *
  * It's intended for use during development when you're outputting logs to the
