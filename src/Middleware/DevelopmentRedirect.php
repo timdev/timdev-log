@@ -14,10 +14,13 @@ use Psr\Http\Server\RequestHandlerInterface;
  * responses and replaces the body content with a simple HTML page with a
  * meta-refresh tag.
  *
- * It's intended for use during development when you're outputting logs to the
- * browser console via some mechanism that relies on the browser executing code
- * in the body (specifically Monolog's BrowserConsoleHandler, but should work
- * with any similar mechanism).
+ * In development, if you've got the BrowserConsoleHandler active to output logs
+ * to your browser console, you'll soon be frustrated by POST/Redirect/GET-
+ * style form-submissions. All the interesting stuff happens during the POST
+ * request, but the logs never make it to the browser (because they're written
+ * out via javascript, which never gets executed). This middleware transforms
+ * the HTTP redirect to a regular page load with a meta-refresh to effect the
+ * redirect behavior.
  *
  * The redirect is "neutered" by removing the Location header, leaving the
  * status code intact. The original value of the Location header is added back
