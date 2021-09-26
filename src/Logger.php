@@ -83,5 +83,4 @@ class Logger extends MonologStackLogger
         );
         return $t;
     }
-
 }

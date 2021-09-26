@@ -1,10 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TimDev\Test\Log\DI;
 
 use PHPUnit\Framework\TestCase;
-
 use Psr\Container\ContainerInterface;
 use TimDev\Log\ConfigProvider;
 use TimDev\Log\DI\LoggerFactory;
@@ -35,7 +35,6 @@ class LoggerFactoryTest extends TestCase
 
         $this->expectException(\LogicException::class);
         $factory = new LoggerFactory();
-        $logger = $factory->__invoke($container);
-
+        $factory->__invoke($container);
     }
 }

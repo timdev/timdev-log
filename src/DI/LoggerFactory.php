@@ -6,11 +6,13 @@ namespace TimDev\Log\DI;
 
 use Psr\Container\ContainerInterface;
 use TimDev\Log\Logger;
+use TimDev\TypedConfig\Config;
 
 class LoggerFactory
 {
-    public function __invoke(ContainerInterface $container)
+    public function __invoke(ContainerInterface $container): Logger
     {
+        /** @var array<string,string|bool>|false $config */
         $config = $container->get('config')['timdev']['log'] ?? false;
 
         if (!$config) {
@@ -19,7 +21,12 @@ class LoggerFactory
             );
         }
 
-        return Logger::create($config['name'], $config['logfile'], $config['enable_browser_console']);
-    }
+        $config = new Config($config);
 
+        return Logger::create(
+            $config->string('name'),
+            $config->string('logfile'),
+            $config->bool('enable_browser_console')
+        );
+    }
 }

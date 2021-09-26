@@ -10,7 +10,6 @@ use Monolog\Handler\TestHandler;
 use PHPUnit\Framework\TestCase;
 use TimDev\Log\ConfigProvider;
 use TimDev\Log\Logger;
-
 use TimDev\TypedConfig\Config;
 
 use function PHPUnit\Framework\assertInstanceOf;
@@ -26,5 +25,4 @@ class ConfigProviderTest extends TestCase
         assertIsArray($config['timdev']);
         assertIsArray($config['timdev']['log']);
     }
-
 }
