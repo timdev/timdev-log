@@ -7,9 +7,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
 use TimDev\StackLogger\MonologStackLogger;
 
-/**
- *
- */
 class Logger extends MonologStackLogger
 {
     public static function create(

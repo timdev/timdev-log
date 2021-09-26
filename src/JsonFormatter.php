@@ -21,7 +21,7 @@ use Monolog\Formatter\JsonFormatter as MonologJsonFormatter;
  *   - Renames 'message' => 'msg' and 'datetime' => 'ts'.
  *   - "Hoists" values in 'context' to the top level of the object.
  *   - Formats log timestamps as 'U.u'.
- *   - Include stack traces in logged exceptions.
+ *   - Includes stack traces in logged exceptions.
  */
 class JsonFormatter extends MonologJsonFormatter
 {

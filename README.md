@@ -1,9 +1,28 @@
 # timdev/log
 
-> Opinionated, structured, logging for PHP.
+> (Very) Opinionated, structured, logging for PHP. Probably not for you.
 
 * Build on top of [monolog] and [timdev/stack-logger].
 * Logs are structured as [ndjson]
+
+## Goals
+
+This package represents my (admittedly evolving) approach to logging for PHP 
+applications. It composes 
+[timdev/stack-logger](https://github.com/timdev/php-stack-logger/) with 
+[monolog](https://github.com/Seldaek/monolog) to produce a distinct flavor of
+[ndjson] logs.
+
+The main goal is to reduce the number of things I need to decide or remember 
+when setting up logging in PHP application. Therefore, configuration knobs are
+intentionally minimized.
+
+## The Logger
+
+The logger extends timdev/stack-logger's MonologStackLogger, providing a static
+factory with only three scalar arguments (only one of which is required). It
+also provides a couple of convenience methods to help log application events and
+exceptions. And that's it.
 
 ## Included Middleware
 
@@ -82,8 +101,54 @@ if (getenv('APP_ENV') === 'development'){
 // ... all the rest of my middlewares.
 ```
 
+## Framework Integration
+
+### Mezzio
+
+To date, I've been using this setup with [Mezzio]-based applications.
+
+This package provides a [ConfigProvider](src/ConfigProvider.php) and a 
+[LoggerFactory](src/DI/LoggerFactory.php).
+
+To set this logger up in your mezzio project, just add the ConfigProvider in 
+your config, and you'll have a logger in your container:
+
+```php
+$logger = $container->get(\TimDev\Log\Logger::class);
+
+// It's a PSR3 logger!
+$logger->info('I can do PSR3 things ...');
+
+// It's a StackLogger!
+$childLogger = $logger->withContext(['some' => 'context']);
+$childLogger->debug('foo');
+
+// You can throw exceptions at it!
+$ex = new \LogicException('Ya dun goofed!');
+$logger->exception($ex);
+
+// etc
+```
+
+You can configure the logger in any of your `config/autoload/*.php` files as
+appropriate. A full configuration might look like:
+
+**config/autoload/timdev_log.local.php**
+```php
+return [
+    'timdev' => [
+        'log' => [
+            'name'    => 'my-app',              // default: 'app'
+            'logfile' => 'data/logs/app.log'    // default: 'php://stdout'
+            'enable_browser_console' => true,   // default: false
+            'dev_redir_delay_seconds' => 2      // default: 0
+        ]       
+    ]
+];
+```
 
 [monolog]: https://github.com/Seldaek/monolog
 [timdev/stack-logger]: https://git.timdev.com/tim/php-stack-logger
 [ndjson]: http://ndjson.org/
-[BrowserConsoleHandler](https://github.com/Seldaek/monolog/blob/82ab6a5f4f9ad081856eee4c9458efed5ecd7156/src/Monolog/Handler/BrowserConsoleHandler.php)
+[BrowserConsoleHandler]: (https://github.com/Seldaek/monolog/blob/82ab6a5f4f9ad081856eee4c9458efed5ecd7156/src/Monolog/Handler/BrowserConsoleHandler.php)
+[Mezzio]: https://github.com/mezzio/mezzio

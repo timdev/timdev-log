@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TimDev\Log;
 
+use TimDev\Log\DI\LoggerFactory;
+
 class ConfigProvider
 {
     public function __invoke(): array
@@ -16,7 +18,11 @@ class ConfigProvider
 
     private function getDependencies(): array
     {
-        return [];
+        return [
+            'factories' => [
+                Logger::class => LoggerFactory::class
+            ]
+        ];
     }
 
     private function getConfig(): array
