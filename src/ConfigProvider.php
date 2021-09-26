@@ -23,7 +23,7 @@ class ConfigProvider
     {
         return [
             'name' => 'app',
-            'logfile' => 'php://output',
+            'logfile' => 'php://stdout',
             'enable_browser_console' => false
         ];
     }
