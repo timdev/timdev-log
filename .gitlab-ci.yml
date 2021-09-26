@@ -1,22 +1,48 @@
+stages:
+  - test
+  - publish
+
 # We want to cache the vendor dir.
-cache:
-  # this expands to the branch, eg: 'master'
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-  - vendor/
 
-before_script:
-# We need git and PHP's zip extension.
-- apt-get update -yqq && apt-get install libzip-dev git -yqq
-- docker-php-ext-install zip
-
-# Install composer
-- curl -sS https://getcomposer.org/installer | php
-
-# Install all project dependencies
-- php composer.phar install
+#before_script:
+#  # We need git and PHP's zip extension.
+#  - apt-get update -yqq && apt-get install libzip-dev git -yqq
+#  - docker-php-ext-install zip
+#
+#  # Install composer
+#  - curl -sS https://getcomposer.org/installer | php
+#
+#  # Install all project dependencies
+#  - php composer.phar install
 
 test:php8.0:
-  image: php:8.0-cli
+  image: cimg/php:8.0.11
+  stage: test
+  cache:
+    # this expands to the branch, eg: 'master'
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+    - vendor/
   script:
-  - php composer.phar dev:qa
+  - composer install
+  - composer dev:qa
+
+publish:
+  image: curlimages/curl:latest
+  stage: publish
+  variables:
+      URL: "$CI_SERVER_PROTOCOL://$CI_SERVER_HOST:$CI_SERVER_PORT/api/v4/projects/$CI_PROJECT_ID/packages/composer?job_token=$CI_JOB_TOKEN"
+  script:
+    - version=$([[ -z "$CI_COMMIT_TAG" ]] && echo "branch=$CI_COMMIT_REF_NAME" || echo "tag=$CI_COMMIT_TAG")
+    - insecure=$([ "$CI_SERVER_PROTOCOL" = "http" ] && echo "--insecure" || echo "")
+    - response=$(curl -s -w "\n%{http_code}" $insecure --data $version $URL)
+    - code=$(echo "$response" | tail -n 1)
+    - body=$(echo "$response" | head -n 1)
+    # Output state information
+    - if [ $code -eq 201 ]; then
+        echo "Package created - Code $code - $body";
+      else
+        echo "Could not create package - Code $code - $body";
+        exit 1;
+      fi
+
